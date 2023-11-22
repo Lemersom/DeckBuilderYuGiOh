@@ -1,0 +1,254 @@
+.App {
+  text-align: center;
+  background-image: url('./assets/images/background-body.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/*header*/
+.App-header-bar {
+  background-image: url('./assets/images/background-body.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 1%;
+}
+
+.main {
+  height: 100%;
+}
+
+.header-logo:hover{
+  cursor: pointer;
+}
+
+/*Search View*/
+
+.App-main {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 2% auto 2% auto;
+  padding: 2%;
+  background-color: #CCDFFF;
+  justify-content: space-between;
+  max-width: 980px;
+  border-radius: 5px;
+  gap: 15px;
+}
+
+.App-main-button:hover{
+  color: #0051DE;
+  background-color: #e0ecf3 ;
+}
+
+@media (max-width: 940px) {
+  .App-main {
+    margin: 2%;
+    color: #e0ecf3;
+    justify-content: space-around;
+  }
+  .App-main-button:hover{
+    color: #e0ecf3;
+    background-color: #0051DE;;
+  }
+
+  .header-toolbar {
+    margin: auto;
+  }
+}
+
+#outlined-basic {
+  width: 40em;
+  border: 2px, black;
+}
+
+.App-main-form {
+  min-width: 10%;
+  background-color: #CCDFFF;
+}
+
+.msg-div {
+  margin: auto;
+  width: 100%;
+}
+
+.error-msg {
+  color: #b61717;
+}
+
+.hint-msg {
+  color: #0051DE
+}
+
+/*Card*/
+
+.main-card {
+  justify-content: center;
+  padding: 2%;
+}
+
+
+.main-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  width: 870px;
+}
+
+.main-popup-background {
+  display: flex;
+  z-index: 999;
+  color: #ffffff;
+  flex-flow: row wrap;
+  word-wrap: break-word;
+}
+
+.content-card-popup{
+  display: flex;
+  margin: 0 0 0 2%;
+  padding-top: 2%;
+  background-image: url('./assets/images/background-card.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+  background-color: #285b78;
+  flex-direction: column;
+  align-items: center;
+  width: 47.5%;
+  border-radius: 7px;
+}
+
+/*scroll*/
+.content-card-popup .text-content {
+  max-height: 430px; 
+  overflow-y: auto;
+}
+
+.content-card-popup ::-webkit-scrollbar {
+  width: 3.5px; 
+}
+
+.content-card-popup ::-webkit-scrollbar-track {
+  background: #4c4c4c;
+  border-radius: 6px;
+}
+
+.content-card-popup ::-webkit-scrollbar-thumb {
+  background: #201f1f;
+}
+
+.content-card-popup ::-webkit-scrollbar-thumb:hover {
+  background: #191919; 
+}
+
+.content-card-popup ul{
+  width: 80%;
+  justify-content: left;
+}
+
+.popup-background {
+  position: fixed;
+  z-index: 900;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.set-name{
+  font-size: 23.5px;
+}
+
+@media (max-width: 1000px) {
+  .main-popup-background {
+    width: 422px;
+    margin: auto;
+  }
+  .content-card-popup{
+    min-width: 96%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  .main-popup {
+    width: 80%;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+  .content-card-popup{
+    max-width: 100%;
+    margin: 2% 0 0 0;
+  }
+  .main-popup-background {
+    width: 80%;
+  }
+}
+@media (max-width: 550px) {
+  .main-popup-background {
+    width: 100%;
+  }
+}
+
+/*Pagination*/
+.main-pagination-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 2%;
+  color: white !important;
+}
+
+.MuiPaginationItem-outlined{
+  color: white !important;
+  border-color: white !important;
+}
+
+/*footer*/
+#footer {
+  background-image: url('./assets/images/img-footer.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  font-weight: bold;
+  gap: 5%;
+}
+
+.footer-fixed {
+  position: fixed;
+  bottom: 0; 
+  width: 100%;
+}
+
+.perfil {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.perfil ul {
+  padding: 0;
+  list-style: none;
+}
+
+.perfil ul h4 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+}
+
+.perfil ul a {
+  color: #CCDFFF;
+}
