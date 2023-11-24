@@ -1,6 +1,73 @@
-.App {
-  text-align: center;
+body{
   background-image: url('./assets/images/background-body.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.box-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #000;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 70px 70px;
+  box-shadow: 0 0 5px black;
+}
+
+.box-login h2{
+  font-size: 40px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  height: 50px;
+  width: 300px;
+  padding: 0 12px 0 12px;
+  border-radius: 25px;
+  border: none;
+  background-color: rgb(7, 25, 105, 0.2);
+  font-size: 18px;
+}
+
+.button-submit {
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  font-size: 18px;
+  background-color: #121212;
+  color: #fff;
+  width: 50%;
+  margin-top: 10%;
+}
+
+.button-submit:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: rgb(7, 25, 105);
+}
+
+
+.App {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -19,6 +86,11 @@
 
 .main {
   height: 100%;
+}
+
+.header-toolbar{
+  display: flex;
+  justify-content: space-between;
 }
 
 .header-logo:hover{
