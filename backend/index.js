@@ -1,9 +1,13 @@
 const express = require('express')
 const cors = require('cors')
-
+const cache = require('express-redis-cache')
+require('dotenv').config()
 const app = express()
 
-require('dotenv').config()
+const redisCache = cache({
+    host: 'localhost',
+    port: 6379
+})
 
 app.use(express.json(), cors())
 

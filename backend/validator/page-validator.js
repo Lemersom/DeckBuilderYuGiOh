@@ -21,8 +21,13 @@ module.exports = {
 
     validatePage: function(req, res, next) {
         const {error, value} = Joi.number().integer().required().validate(req.query.page)
+
         if(error) {
             return res.status(400).json("Page cannot be null")
+        }
+
+        if(req.query.page == 0) {
+            return res.status(400).json("Page must be > 0")
         }
 
         req.query.page = value
