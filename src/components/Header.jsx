@@ -6,11 +6,9 @@ import Image from '../assets/images/Yu-Gi-Oh.svg';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
 
 
 export default function Header(props) {
-  const navigate = useNavigate();
 
     return (
 
@@ -20,7 +18,15 @@ export default function Header(props) {
             <Toolbar variant="dense" className='header-toolbar'>
               <img src={Image} alt='Logo' onClick={props.onClickLogo} className='header-logo'/>
 
-              <Button variant="contained" color="blueBtn" className="App-main-button" onClick={()=> navigate('/register')}>
+              <Button variant="contained" color="blueBtn" className="App-main-button" onClick={ () =>
+                        
+        {showModal && createPortal(
+          <div onClick={() => setShowModal(false)}>
+              <Register />
+          </div>,
+          document.body
+        )}
+              }>
                     <Typography>New Card</Typography>
               </Button>
             </Toolbar>

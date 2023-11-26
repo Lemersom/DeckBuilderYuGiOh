@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
-  const navigate = useNavigate();
+function Register() {
+const navigate = useNavigate();
 
   return (
     <div className="login-container">
       <div className='box-login'>
-      <h2>Welcome</h2>
-      <form onSubmit={()=> navigate('/home')} className='form'>
+      <h2>New Card</h2>
+      <form onSubmit={() => setShowModal(false)} className='form'>
         <div className="form-group">
           <input
             type="text"
-            id="username"
-            name="username"
-
+            id="name"
+            name="name"
             required
-            placeholder='Usuário'
+            placeholder='Name'
           />
         </div>
         <div className="form-group">
           <input
-            type="password"
-            id="password"
-            name="password"
+            type="text"
+            id="image"
+            name="image"
 
             required
-            placeholder='Senha'
+            placeholder='http://image.com'
           />
         </div>
-        <button type="submit" className='button-submit'>Login</button>
+        <button type="submit" className='button-submit'>Save</button>
       </form>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;
