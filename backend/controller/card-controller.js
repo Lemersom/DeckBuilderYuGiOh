@@ -6,13 +6,10 @@ const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
 
-let limit = 4,
-    page = 1;
-
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
-        const route_name = `/api/card?limit=${limit}&page=${page}`
+        const route_name = name ? name : `/api/card?*`
         if(!cache.connected) {
             next()
             return
@@ -29,35 +26,13 @@ cache.invalidate = (name) => {
     }
 }
 
-const invalidateCachePagination = (req, res, next) => {
-    const route_name = `/api/card?limit=${limit}&page=${page}`
-
-    if(req.query.limit != limit || req.query.page != page){
-        cache.del(route_name, (err) => {
-            if (err) {
-                console.log(`Error deleting cache: ${err}`)
-            }
-            else{
-                console.log(`Cache deleted: ${route_name}`)
-            }
-        })
-        
-        limit = req.query.limit
-        page = req.query.page
-    }
-
-    next()
-}
 
 router.get('/', 
     authValidator.validateToken,
     pageValidator.validateLimit,
     pageValidator.validatePage,
-    invalidateCachePagination,
-    cache.route(),
+    cache.route({ expire: 3600 }),
     async (req, res) => {
-        limit = req.query.limit
-        page = req.query.page
         const response = await cardService.listCards(req.query.limit, req.query.page)
         res.status(response.status).json(response.data)
 })
