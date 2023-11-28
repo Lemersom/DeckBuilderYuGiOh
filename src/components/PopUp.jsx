@@ -1,4 +1,4 @@
-import { Card, CardMedia, Typography } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 
 export default function ModalContent(props) {
   const doNotClose = (event) => {
@@ -18,15 +18,6 @@ export default function ModalContent(props) {
             alt="Card Image"
           />
         </Card>
-        <div className="content-card-popup">
-          <Typography variant="h3">Sets: </Typography>
-          <ul className="text-content">
-            {props.sets &&
-              props.sets.map((set) => ( 
-                <li className="set-name">{set.set_name}</li>
-              ))}
-          </ul>
-        </div>
       </div>
     </div>
   );

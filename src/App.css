@@ -24,6 +24,17 @@ body{
   box-shadow: 0 0 5px black;
 }
 
+.box-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #000;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 70px 70px;
+  box-shadow: 0 0 5px black;
+}
+
 .box-login h2{
   font-size: 40px;
 }
@@ -169,7 +180,7 @@ body{
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
-  width: 870px;
+  width: 435px;
 }
 
 .main-popup-background {
@@ -179,23 +190,6 @@ body{
   flex-flow: row wrap;
   word-wrap: break-word;
 }
-
-.content-card-popup{
-  display: flex;
-  margin: 0 0 0 2%;
-  padding-top: 2%;
-  background-image: url('./assets/images/background-card.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-
-  background-color: #285b78;
-  flex-direction: column;
-  align-items: center;
-  width: 47.5%;
-  border-radius: 7px;
-}
-
 /*scroll*/
 .content-card-popup .text-content {
   max-height: 430px; 

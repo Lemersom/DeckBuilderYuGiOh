@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import axios from 'axios';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
@@ -16,7 +17,7 @@ import Header from './components/Header.jsx';
 import Login from './components/Login.jsx';
 import PopUp from './components/PopUp.jsx';
 
-const authLogin = require('../backend/helper/auth.js');
+const token = localStorage.getItem('token');
 
 const theme = createTheme({
   palette: {
@@ -69,21 +70,29 @@ function App() {
     setShowModal(true)
   }
 
-  const callApi = () => {
+  const callApi = async () => {
+    try {
 
-    (async () => {
-      const link = `https://db.ygoprodeck.com/api/v7/cardinfo.php?${query}&num=20&offset=${(page - 1) * 20}`
-      const resp = await fetch(link);
-      const data = await resp.json();
+      const link = `http://localhost:3000/api/card?limit=20&page=${page}`;
+
+      const response = await axios.get(link, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        }
+      });
+      const data = response.data;
+  
       if (data.error) {
-        setErrorMsg(true)
+        setErrorMsg(true);
+      } else {
+        setErrorMsg(false);
+        setCards(data.data);
+        setMaxCards(data.meta.total_rows);
       }
-      else {
-        setErrorMsg(false)
-        setCards(data.data)
-        setMaxCards(data.meta.total_rows)
-      }
-    })();
+    } catch (error) {
+      // Trate os erros, se necessário
+      console.error('Erro na requisição:', error);
+    }
   };
 
 
@@ -106,7 +115,7 @@ function App() {
 
   return (
     <>
-      {/*authLogin()*/ 0 ? (
+      {!token ? (
         < div >
         <Login />
       </div >
@@ -144,7 +153,6 @@ function App() {
                   <Card
                     image={card["card_images"][0].image_url_cropped}
                     name={card.name}
-                    type={card.type}
                     onClick={() => showPopUp(index)}
                   />
                 ))

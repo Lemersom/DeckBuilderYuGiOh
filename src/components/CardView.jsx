@@ -16,7 +16,6 @@ function CardView(props) {
                 </CardActionArea>
                 <CardContent>
                     <Typography>{props.name}</Typography>
-                    <Typography>Type: {props.type}</Typography>
                 </CardContent>
             </Card>
         </Grid>

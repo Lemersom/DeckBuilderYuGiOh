@@ -21,7 +21,9 @@ function Login() {
         email: email,
         password: password,
       });
-    } catch (error) {
+      localStorage.setItem("token", response.data);
+      location.reload();
+        } catch (error) {
       console.error('Erro durante a solicitação:', error);
     }
   };
