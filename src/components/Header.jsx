@@ -11,29 +11,40 @@ import Register from './Register.jsx';
 
 export default function Header(props) {
   const [showModal, setShowModal] = useState(false);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    location.reload();
+  };
+
   return (
 
     <header>
-            <div onClick={() => setShowModal(true)}>
-              {showModal && createPortal(
-              <div onClick={() => setShowModal(true)}>
-                <Register />
-              </div>,
-              document.body
-            )}
-            </div>
+      <div onClick={() => setShowModal(true)}>
+        {showModal && createPortal(
+          <div onClick={() => setShowModal(true)}>
+            <Register />
+          </div>,
+          document.body
+        )}
+      </div>
 
 
       <AppBar position="static" className="App-header-bar" color="blueHeader">
         <Toolbar variant="dense" className='header-toolbar'>
           <img src={Image} alt='Logo' onClick={props.onClickLogo} className='header-logo' />
 
-          <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
-                setShowModal(true)
-          }
-          }>
-            <Typography>New Card</Typography>
-          </Button>
+          <div className='actions-header'>
+            <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
+              setShowModal(true)
+            }
+            }>
+              <Typography>New Card</Typography>
+            </Button>
+
+            <Typography><a href="" onClick={logout}>LOGOUT</a></Typography>
+          </div>
+
         </Toolbar>
       </AppBar>
 

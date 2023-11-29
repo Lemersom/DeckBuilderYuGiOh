@@ -108,6 +108,13 @@ body{
   cursor: pointer;
 }
 
+.actions-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 15%;
+}
 /*Search View*/
 
 .App-main {
@@ -180,7 +187,6 @@ body{
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 999;
-  width: 435px;
 }
 
 .main-popup-background {
@@ -188,8 +194,12 @@ body{
   z-index: 999;
   color: #ffffff;
   flex-flow: row wrap;
-  word-wrap: break-word;
 }
+
+.main-popup-media{
+  height: 450px;
+}
+
 /*scroll*/
 .content-card-popup .text-content {
   max-height: 430px; 

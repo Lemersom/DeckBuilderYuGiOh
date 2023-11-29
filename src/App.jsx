@@ -73,7 +73,7 @@ function App() {
   const callApi = async () => {
     try {
 
-      const link = `http://localhost:3000/api/card?limit=20&page=${page}`;
+      const link = `http://localhost:3000/api/card?limit=4&page=${page}`;
 
       const response = await axios.get(link, {
         headers: {
@@ -86,11 +86,10 @@ function App() {
         setErrorMsg(true);
       } else {
         setErrorMsg(false);
-        setCards(data.data);
-        setMaxCards(data.meta.total_rows);
+        setCards(data.rows);
+        setMaxCards(data.count);
       }
     } catch (error) {
-      // Trate os erros, se necessário
       console.error('Erro na requisição:', error);
     }
   };
@@ -99,7 +98,7 @@ function App() {
   useEffect(() => {
     callApi();
     page === 1 ? setHintMsg(true) : setHintMsg(false)
-  }, [page, especificCard]);
+  }, [page, especificCard, maxCards]);
 
   useEffect(() => {
     setPage(1)
@@ -129,8 +128,7 @@ function App() {
           {showModal && createPortal(
             <div className='popup-background' onClick={() => setShowModal(false)}>
               <PopUp
-                image={cards[especificCard]["card_images"][0].image_url}
-                sets={cards[especificCard]["card_sets"]}
+                image={cards[especificCard].image}
               />
             </div>,
             document.body
@@ -147,11 +145,10 @@ function App() {
             </QueryContext.Provider>
 
             <Grid container spacing={4} align="center" className="main-card">
-
               {
                 !errorMsg && cards.map((card, index) => (
                   <Card
-                    image={card["card_images"][0].image_url_cropped}
+                    image={card.image}
                     name={card.name}
                     onClick={() => showPopUp(index)}
                   />
@@ -162,7 +159,7 @@ function App() {
 
             {!errorMsg &&
               <Pagination
-                count={Math.ceil(maxCards / 20)}
+                count={Math.ceil(maxCards / 4)}
                 page={page}
                 onChange={onChangePage}
                 className='main-pagination-bar'

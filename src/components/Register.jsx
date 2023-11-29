@@ -26,10 +26,11 @@ function Register() {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,
         }
       });
+      location.reload();
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
     }
-    setShowModal(false)
+    
   };
 
   return (
