@@ -1,11 +1,23 @@
 const CardModel = require("../model/Card")
+const { Op } = require('sequelize')
 
 module.exports = {
-    list: async function(limit, page) {
-        return await CardModel.findAndCountAll({
-            limit: limit,
-            offset: (page - 1) * limit
-        })
+    list: async function(limit, page, name) {
+        if(name) {
+            return await CardModel.findAndCountAll({
+                where: {
+                    name: { [Op.like]: '%' + name + '%' }  
+                },
+                limit: limit,
+                offset: (page - 1) * limit
+            })
+        }
+        else{
+            return await CardModel.findAndCountAll({
+                limit: limit,
+                offset: (page - 1) * limit
+            })
+        }
     },
 
     create: async function(name, image) {

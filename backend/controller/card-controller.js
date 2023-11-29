@@ -1,11 +1,14 @@
 const express = require('express')
 const router = express.Router()
+const logDAO = require('../DAO/log-dao')
 const cardService = require('../service/card-service')
+const userService = require('../service/user-service')
 const authValidator = require('../validator/auth-validator')
 const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
-
+const sendMessage = require('../messaging/publish')
+const receiveMessage = require('../messaging/subscribe')
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
@@ -31,16 +34,29 @@ router.get('/',
     authValidator.validateToken,
     pageValidator.validateLimit,
     pageValidator.validatePage,
-    cache.route({ expire: 3600 }),
+    cache.route({ expire: 15 }),
     async (req, res) => {
         const response = await cardService.listCards(req.query.limit, req.query.page)
         res.status(response.status).json(response.data)
 })
 
-router.get('/:id', 
+router.get('/:name', 
     authValidator.validateToken,
+    pageValidator.validateLimit,
+    pageValidator.validatePage,
+    cache.route({ expire: 15 }),
     async (req, res) => {
-        const response = await cardService.getCardById(req.params.id)
+        const response = await cardService.listCards(req.query.limit, req.query.page, req.params.name)
+
+        const userResponse = await userService.getUserById(req.userId)
+
+        const log = { search: req.params.name, userEmail: userResponse.email, date: new Date().toLocaleString() }
+
+        // await sendMessage(log)
+        // await receiveMessage()
+
+        //const log = await logDAO.create(req.params.name, userResponse.email, new Date().toLocaleString())
+
         res.status(200).json(response)
 })
 

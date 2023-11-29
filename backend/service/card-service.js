@@ -9,8 +9,8 @@ module.exports = {
         return await cardDAO.getByName(name)
     },
 
-    listCards: async function(limit, page) {
-        const cards = await cardDAO.list(limit, page)
+    listCards: async function(limit, page, name) {
+        const cards = await cardDAO.list(limit, page, name)
         if(cards) {
             if(cards.rows.length > 0) {
                 return { status: 200, data: cards }
