@@ -1,17 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import axios from 'axios';
 
 import QueryContext from '../QueryContext';
 
 
 export default function SearchView() {
 
-    const { setQuery, errorMsg, hintMsg, logoClicked } = useContext(QueryContext)
+    const { setCards, errorMsg, logoClicked } = useContext(QueryContext)
     
     const [placeholder, setPlaceholder] = React.useState("name")
     const [textFieldValue, setTextFieldValue] = React.useState("")
+    const [page, setPage] = useState(1);
 
     const keyPressed = (event) => {
       if(event.keyCode === 13){
@@ -19,8 +21,18 @@ export default function SearchView() {
       }
     }
 
-    const searchFunction = () => {
-      setQuery(`&${textFieldValue}`)
+    const searchFunction = async () => {
+
+      try {
+        const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          }
+        });
+        setCards(response.data.data.rows);
+      } catch (error) {
+        console.error('Erro durante a solicitação:', error);
+      }
     }
 
     useEffect(() => {
@@ -48,7 +60,6 @@ export default function SearchView() {
 
             <div className='msg-div'>
               <Typography className='error-msg' variant='h5' display={errorMsg ? "block" : "none"}>Failed to find cards</Typography>
-              <Typography className='hint-msg' variant='h6' display={!errorMsg && hintMsg ? "block" : "none"}>More Info: Click on the Card Image</Typography>
             </div>
         
 

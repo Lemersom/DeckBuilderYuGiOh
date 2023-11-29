@@ -48,7 +48,6 @@ function App() {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("")
   const [errorMsg, setErrorMsg] = useState(false)
-  const [hintMsg, setHintMsg] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [especificCard, setEspecificCard] = useState(-1)
   const [scrollToTop, setScrollToTop] = useState(false);
@@ -73,7 +72,7 @@ function App() {
   const callApi = async () => {
     try {
 
-      const link = `http://localhost:3000/api/card?limit=4&page=${page}`;
+      const link = `http://localhost:3000/api/card?limit=20&page=${page}`;
 
       const response = await axios.get(link, {
         headers: {
@@ -97,7 +96,6 @@ function App() {
 
   useEffect(() => {
     callApi();
-    page === 1 ? setHintMsg(true) : setHintMsg(false)
   }, [page, especificCard, maxCards]);
 
   useEffect(() => {
@@ -140,7 +138,7 @@ function App() {
 
           <main id="main">
 
-            <QueryContext.Provider value={{ setQuery, errorMsg, hintMsg, logoClicked }}>
+            <QueryContext.Provider value={{ setCards ,setQuery, errorMsg, logoClicked }}>
               <SearchView />
             </QueryContext.Provider>
 
@@ -159,7 +157,7 @@ function App() {
 
             {!errorMsg &&
               <Pagination
-                count={Math.ceil(maxCards / 4)}
+                count={Math.ceil(maxCards / 20)}
                 page={page}
                 onChange={onChangePage}
                 className='main-pagination-bar'
