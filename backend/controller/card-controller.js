@@ -1,14 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const logDAO = require('../DAO/log-dao')
 const cardService = require('../service/card-service')
 const userService = require('../service/user-service')
 const authValidator = require('../validator/auth-validator')
 const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
-const sendMessage = require('../messaging/publish')
-const receiveMessage = require('../messaging/subscribe')
+const messageService = require('../messaging/message-service')
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
@@ -52,10 +50,8 @@ router.get('/:name',
 
         const log = { search: req.params.name, userEmail: userResponse.email, date: new Date().toLocaleString() }
 
-        // await sendMessage(log)
-        // await receiveMessage()
-
-        //const log = await logDAO.create(req.params.name, userResponse.email, new Date().toLocaleString())
+        await messageService.sendMessage(log)
+        await messageService.receiveMessage()
 
         res.status(200).json(response)
 })
