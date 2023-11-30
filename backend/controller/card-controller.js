@@ -66,6 +66,9 @@ router.post('/',
             req.body.name,
             req.body.image
         )
+
+        wsModule.notifyUsers();
+        
         res.status(response.status).json(response.data)
 })
 
