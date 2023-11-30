@@ -17,7 +17,6 @@ import Header from './components/Header.jsx';
 import Login from './components/Login.jsx';
 import PopUp from './components/PopUp.jsx';
 
-const token = localStorage.getItem('token');
 
 const theme = createTheme({
   palette: {
@@ -52,7 +51,11 @@ function App() {
   const [especificCard, setEspecificCard] = useState(-1)
   const [scrollToTop, setScrollToTop] = useState(false);
   const [logoClicked, setLogoClicked] = useState(0)
+  
+  const token = localStorage.getItem('token');
 
+  let socket = null
+  
   const resetQuery = () => {
     setQuery("")
     setPage(1)
@@ -80,7 +83,7 @@ function App() {
         }
       });
       const data = response.data;
-  
+
       if (data.error) {
         setErrorMsg(true);
       } else {
@@ -114,70 +117,71 @@ function App() {
     <>
       {!token ? (
         < div >
-        <Login />
-      </div >
+          <Login />
+        </div >
 
-  ) : (
+      ) : (
 
-    <div>
-      <div className="App">
-        <ThemeProvider theme={theme}>
+        <div>
+          <div className="App">
 
-          {showModal && createPortal(
-            <div className='popup-background' onClick={() => setShowModal(false)}>
-              <PopUp
-                image={cards[especificCard].image}
-              />
-            </div>,
-            document.body
-          )}
+            <ThemeProvider theme={theme}>
 
-
-          <Header onClickLogo={resetQuery} />
-
-
-          <main id="main">
-
-            <QueryContext.Provider value={{ setCards ,setQuery, errorMsg, logoClicked }}>
-              <SearchView />
-            </QueryContext.Provider>
-
-            <Grid container spacing={4} align="center" className="main-card">
-              {
-                !errorMsg && cards.map((card, index) => (
-                  <Card
-                    image={card.image}
-                    name={card.name}
-                    onClick={() => showPopUp(index)}
+              {showModal && createPortal(
+                <div className='popup-background' onClick={() => setShowModal(false)}>
+                  <PopUp
+                    image={cards[especificCard].image}
                   />
-                ))
-              }
+                </div>,
+                document.body
+              )}
 
-            </Grid>
 
-            {!errorMsg &&
-              <Pagination
-                count={Math.ceil(maxCards / 20)}
-                page={page}
-                onChange={onChangePage}
-                className='main-pagination-bar'
-                variant="outlined"
-                shape="rounded"
-                color='white'
-                size='large'
-              />
-            }
+              <Header onClickLogo={resetQuery} />
 
-          </main>
 
-          <Footer errorMsg={errorMsg} />
+              <main id="main">
 
-        </ThemeProvider>
+                <QueryContext.Provider value={{ setCards, setQuery, errorMsg, logoClicked }}>
+                  <SearchView />
+                </QueryContext.Provider>
 
-      </div>
-    </div>
-  )
-}
+                <Grid container spacing={4} align="center" className="main-card">
+                  {
+                    !errorMsg && cards.map((card, index) => (
+                      <Card
+                        image={card.image}
+                        name={card.name}
+                        onClick={() => showPopUp(index)}
+                      />
+                    ))
+                  }
+
+                </Grid>
+
+                {!errorMsg &&
+                  <Pagination
+                    count={Math.ceil(maxCards / 20)}
+                    page={page}
+                    onChange={onChangePage}
+                    className='main-pagination-bar'
+                    variant="outlined"
+                    shape="rounded"
+                    color='white'
+                    size='large'
+                  />
+                }
+
+              </main>
+
+              <Footer errorMsg={errorMsg} />
+
+            </ThemeProvider>
+
+          </div>
+        </div>
+      )
+      }
     </>
   )
 }
