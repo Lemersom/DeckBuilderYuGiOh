@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import { createPortal } from 'react-dom';
 import Register from './Register.jsx';
+import QueryContext from '../QueryContext'
+
 
 import { AppContext } from '../context/appContext.jsx';
 
@@ -28,7 +30,7 @@ export default function Header(props) {
   return (
 
     <header>
-      <div onClick={() => setShowModal(true)}>
+      <div onClick={() => setShowModal(false)}>
         {showModal && createPortal(
           <div onClick={() => setShowModal(true)}>
             <Register />
@@ -42,13 +44,19 @@ export default function Header(props) {
         <Toolbar variant="dense" className='header-toolbar'>
           <img src={Image} alt='Logo' onClick={props.onClickLogo} className='header-logo' />
 
+
           <div className='actions-header'>
-            <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
+          <QueryContext.Provider value={{ setShowModal }}>
+          <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
               setShowModal(true)
             }
             }>
               <Typography>New Card</Typography>
             </Button>
+                </QueryContext.Provider>
+
+          
+            
 
             <Button variant='text' size='large' onClick={logout}>LOGOUT</Button>
           </div>

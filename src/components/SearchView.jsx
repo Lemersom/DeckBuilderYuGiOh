@@ -24,12 +24,23 @@ export default function SearchView() {
     const searchFunction = async () => {
 
       try {
-        const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-          }
-        });
-        setCards(response.data.data.rows);
+        if(textFieldValue != ''){
+          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            }
+          });
+          setCards(response.data.data.rows);
+        }else{
+          const response = await axios.get(`http://localhost:3000/api/card?limit=20&page=${page}`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            }
+          });
+          setCards(response.data.rows);
+        }
+        
+        
       } catch (error) {
         console.error('Erro durante a solicitação:', error);
       }

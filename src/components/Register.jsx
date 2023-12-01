@@ -9,6 +9,12 @@ function Register() {
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
+  const doNotClose = (event) => {
+    event.stopPropagation();
+  };
+
 
   const nameChange = (e) => {
     setName(e.target.value);
@@ -19,8 +25,6 @@ function Register() {
   };
 
   const submitForm = async (e) => {
-    e.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:3000/api/card/', {
         name: name,
@@ -38,7 +42,7 @@ function Register() {
         content: `Card ${name} created by ${context.userEmail}`
       })
 
-
+      setShowModal(false)
       //location.reload(); //------------- FECHAR O MODAL AO INVÉS DE RECARREGAR
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
@@ -53,7 +57,7 @@ function Register() {
 
   return (
     <div className="login-container main-popup">
-      <div className='box-register'>
+      <div className='box-register' onClick={doNotClose}>
         <h2>New Card</h2>
         <form onSubmit={submitForm} className='form'>
           <div className="form-group">

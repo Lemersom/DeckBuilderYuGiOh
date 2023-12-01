@@ -86,7 +86,6 @@ function App() {
         }
       });
       const data = response.data;
-
       if (data.error) {
         setErrorMsg(true);
       } else {
@@ -171,7 +170,7 @@ function App() {
 
               <main id="main">
 
-                <QueryContext.Provider value={{ setCards, setQuery, errorMsg, logoClicked }}>
+                <QueryContext.Provider value={{ setCards, setQuery, setErrorMsg, logoClicked, setShowModal }}>
                   <SearchView />
                 </QueryContext.Provider>
 
