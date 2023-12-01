@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import axios from 'axios';
+import useWebSocket from 'react-use-websocket';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
-import { Grid } from '@mui/material';
+import { Grid, Snackbar } from '@mui/material';
 
 import './App.css';
 
 import QueryContext from './QueryContext'
+import { AppContext } from './context/appContext.jsx';
 
 import Card from './components/CardView.jsx';
 import SearchView from './components/SearchView.jsx';
@@ -51,10 +53,11 @@ function App() {
   const [especificCard, setEspecificCard] = useState(-1)
   const [scrollToTop, setScrollToTop] = useState(false);
   const [logoClicked, setLogoClicked] = useState(0)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMsg, setSnackbarMsg] = useState('')
   
   const token = localStorage.getItem('token');
-
-  let socket = null
+  const context = useContext(AppContext)
   
   const resetQuery = () => {
     setQuery("")
@@ -113,6 +116,26 @@ function App() {
     }
   }, [scrollToTop]);
 
+  //WebSocket
+  useEffect(() => {
+    console.log(lastJsonMessage)
+    // context.socket.onmessage = (msg) => {
+    //   console.log(msg.data)
+    //   setSnackbarMsg(msg.data)
+    //   setSnackbarOpen(true)
+    // }
+  }, []);
+
+  //WebSocket
+  useWebSocket('ws://localhost:8080', {
+    onOpen: () => { console.log('WebSocket connection established') }
+  })
+
+  const { lastJsonMessage } = useWebSocket('ws://localhost:8080', {
+    share: true,
+    //filter here so the user cannot see
+  })
+
   return (
     <>
       {!token ? (
@@ -136,6 +159,12 @@ function App() {
                 document.body
               )}
 
+              <Snackbar 
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackbarOpen(false)}
+                message={snackbarMsg}
+              />
 
               <Header onClickLogo={resetQuery} />
 
@@ -148,6 +177,7 @@ function App() {
 
                 <Grid container spacing={4} align="center" className="main-card">
                   {
+                    cards ? 
                     !errorMsg && cards.map((card, index) => (
                       <Card
                         image={card.image}
@@ -155,6 +185,7 @@ function App() {
                         onClick={() => showPopUp(index)}
                       />
                     ))
+                    : null
                   }
 
                 </Grid>

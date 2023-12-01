@@ -6,7 +6,7 @@ const authValidator = require('../validator/auth-validator')
 const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
-const messageService = require('../messaging/message-service')
+const logMessage = require('../messaging/log-messaging')
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
@@ -50,8 +50,8 @@ router.get('/:name',
 
         const log = { search: req.params.name, userEmail: userResponse.email, date: new Date().toLocaleString() }
 
-        await messageService.sendMessage(log)
-        await messageService.receiveMessage()
+        await logMessage.sendMessage(log)
+        await logMessage.receiveMessage()
 
         res.status(200).json(response)
 })
@@ -66,8 +66,6 @@ router.post('/',
             req.body.name,
             req.body.image
         )
-
-        wsModule.notifyUsers();
         
         res.status(response.status).json(response.data)
 })

@@ -1,5 +1,5 @@
 import '../App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Image from '../assets/images/Yu-Gi-Oh.svg';
@@ -8,12 +8,20 @@ import { Typography } from '@mui/material';
 import { createPortal } from 'react-dom';
 import Register from './Register.jsx';
 
+import { AppContext } from '../context/appContext.jsx';
+
 
 export default function Header(props) {
   const [showModal, setShowModal] = useState(false);
 
+  const context = useContext(AppContext)
+
   const logout = () => {
     localStorage.removeItem('token');
+
+    //WebSocket
+    context.socket.close()
+    
     location.reload();
   };
 
@@ -42,7 +50,7 @@ export default function Header(props) {
               <Typography>New Card</Typography>
             </Button>
 
-            <Typography><a href="" onClick={logout}>LOGOUT</a></Typography>
+            <Button variant='text' size='large' onClick={logout}>LOGOUT</Button>
           </div>
 
         </Toolbar>

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../context/appContext';
 import axios from 'axios';
+import useWebSocket from 'react-use-websocket';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const context = useContext(AppContext)
 
   const userChange = (e) => {
     setEmail(e.target.value);
@@ -22,8 +26,14 @@ function Login() {
         password: password,
       });
       localStorage.setItem("token", response.data);
+      context.setUserEmail(email)
+
+      //WebSocket 
+      //context.setSocket()
+
       location.reload();
-        } catch (error) {
+    } 
+    catch (error) {
       console.error('Erro durante a solicitação:', error);
     }
   };

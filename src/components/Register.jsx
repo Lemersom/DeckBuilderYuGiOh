@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { AppContext } from '../context/appContext'
 import axios from 'axios';
+import useWebSocket from 'react-use-websocket';
 
 function Register() {
+
+  const context = useContext(AppContext)
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -26,12 +30,26 @@ function Register() {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,
         }
       });
-      location.reload();
+
+      //WebSocket
+      //context.socket.send(`Card ${name} created by ${context.userEmail}`)
+      sendJsonMessage({
+        type: 'newCard',
+        content: `Card ${name} created by ${context.userEmail}`
+      })
+
+
+      //location.reload(); //------------- FECHAR O MODAL AO INVÉS DE RECARREGAR
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
     }
     
   };
+
+  const {sendJsonMessage} = useWebSocket('ws://localhost:8080', {
+    share: true,
+    filter: () => false
+  })
 
   return (
     <div className="login-container main-popup">
@@ -55,7 +73,7 @@ function Register() {
               name="image"
               onChange={imageChange}
               required
-              placeholder='http://image.com'
+              placeholder='Image Url'
             />
           </div>
           <button type="submit" className='button-submit'>Save</button>
