@@ -24,6 +24,7 @@ function Register() {
   };
 
   const submitForm = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/api/card/', {
         name: name,
@@ -33,12 +34,16 @@ function Register() {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,
         }
       });
-
+      
       //WebSocket
       //context.setSocket()
       context.socket.send(`Card ${name} created by ${context.userEmail}`)
 
+setTimeout(() => {
       setShowModal(false)
+}, 5000)
+
+      
 
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
@@ -48,7 +53,7 @@ function Register() {
 
   return (
     <div className="login-container main-popup">
-      <div className='box-register' onClick={doNotClose}>
+      <div className='box-register'  onClick={doNotClose}>
         <h2>New Card</h2>
         <div className='form'>
           <div className="form-group">
@@ -71,9 +76,11 @@ function Register() {
               placeholder='Image Url'
             />
           </div>
-          <button type="submit" className='button-submit' onClick={submitForm}>Save</button>
+          
         </div>
+        
       </div>
+      <button type="submit" className='button-register' onClick={submitForm}>Save</button>
     </div>
   );
 }

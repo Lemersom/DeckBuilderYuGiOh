@@ -14,6 +14,7 @@ export default function SearchView() {
     const [placeholder, setPlaceholder] = React.useState("name")
     const [textFieldValue, setTextFieldValue] = React.useState("")
     const [page, setPage] = useState(1);
+    
 
     const keyPressed = (event) => {
       if(event.keyCode === 13){
@@ -21,25 +22,26 @@ export default function SearchView() {
       }
     }
 
-    const searchFunction = async () => {
-
+    const searchFunction = async (e) => {
       try {
         if(textFieldValue != ''){
-          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=20&page=${page}`, {
+          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
-          //setMaxCards(response.data.data.count)      Para mudar a paginação ao pesquisar
+           
           setCards(response.data.data.rows);
+          setMaxCards(response.data.data.count)
         }else{
-          const response = await axios.get(`http://localhost:3000/api/card?limit=20&page=${page}`, {
+          const response = await axios.get(`http://localhost:3000/api/card?limit=4&page=${page}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
-          //setMaxCards(response.data.count)
+          
           setCards(response.data.rows);
+          setMaxCards(response.data.count)
         }
         
         

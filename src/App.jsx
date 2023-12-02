@@ -54,10 +54,10 @@ function App() {
   const [logoClicked, setLogoClicked] = useState(0)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMsg, setSnackbarMsg] = useState('')
-  
-  const token = localStorage.getItem('token');
+  const [loginState, setLoginState] = useState(true);
+
   const context = useContext(AppContext)
-  
+
   const resetQuery = () => {
     setQuery("")
     setPage(1)
@@ -75,9 +75,9 @@ function App() {
   }
 
   const callApi = async () => {
-    try {
 
-      const link = `http://localhost:3000/api/card?limit=20&page=${page}`;
+    try {
+      const link = `http://localhost:3000/api/card?limit=4&page=${page}`;
 
       const response = await axios.get(link, {
         headers: {
@@ -91,16 +91,17 @@ function App() {
         setErrorMsg(false);
         setCards(data.rows);
         setMaxCards(data.count);
+        context.setToken(localStorage.getItem('token'))
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
     }
   };
 
-
   useEffect(() => {
     callApi();
-  }, [page, especificCard, maxCards]); // maxCard ao mudar está chamando a api de novo, ver SearchView
+    if(context.token) setLoginState(false)
+  }, [page,especificCard, context.token]); // maxCard ao mudar está chamando a api de novo, ver SearchView
 
   useEffect(() => {
     setPage(1)
@@ -119,7 +120,6 @@ function App() {
     //context.setSocket()
     context.socket.onmessage = (msg) => {
       //context.setSocket()
-      console.log(msg.data)
       setSnackbarMsg(msg.data)
       setSnackbarOpen(true)
     }
@@ -127,10 +127,12 @@ function App() {
 
   return (
     <>
-      {!token ? (
-        < div >
-          <Login />
-        </div >
+      {loginState ? (
+
+        <div>
+          <Login onLogin={setLoginState} />
+        </div>
+        
 
       ) : (
 
@@ -148,7 +150,7 @@ function App() {
                 document.body
               )}
 
-              <Snackbar 
+              <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}
                 onClose={() => setSnackbarOpen(false)}
@@ -166,22 +168,22 @@ function App() {
 
                 <Grid container spacing={4} align="center" className="main-card">
                   {
-                    cards ? 
-                    !errorMsg && cards.map((card, index) => (
-                      <Card
-                        image={card.image}
-                        name={card.name}
-                        onClick={() => showPopUp(index)}
-                      />
-                    ))
-                    : null
+                    cards ?
+                      !errorMsg && cards.map((card, index) => (
+                        <Card
+                          image={card.image}
+                          name={card.name}
+                          onClick={() => showPopUp(index)}
+                        />
+                      ))
+                      : null
                   }
 
                 </Grid>
 
                 {!errorMsg &&
                   <Pagination
-                    count={Math.ceil(maxCards / 20)}
+                    count={Math.ceil(maxCards / 4)}
                     page={page}
                     onChange={onChangePage}
                     className='main-pagination-bar'

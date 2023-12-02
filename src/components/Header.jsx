@@ -23,7 +23,7 @@ export default function Header(props) {
 
     //WebSocket
     //context.setSocket()
-    context.socket.close()
+    // context.socket.close()
     
     location.reload();
   };
