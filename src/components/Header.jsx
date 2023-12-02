@@ -22,6 +22,7 @@ export default function Header(props) {
     localStorage.removeItem('token');
 
     //WebSocket
+    //context.setSocket()
     context.socket.close()
     
     location.reload();
@@ -46,17 +47,14 @@ export default function Header(props) {
 
 
           <div className='actions-header'>
-          <QueryContext.Provider value={{ setShowModal }}>
-          <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
-              setShowModal(true)
-            }
-            }>
-              <Typography>New Card</Typography>
-            </Button>
-                </QueryContext.Provider>
+            <QueryContext.Provider value={{ showModal, setShowModal }}>
+              <Button variant="contained" color="blueBtn" className="App-main-button" onClick={() => {
+                  setShowModal(true)
+                }}>
+                <Typography>New Card</Typography>
+              </Button>
+            </QueryContext.Provider>
 
-          
-            
 
             <Button variant='text' size='large' onClick={logout}>LOGOUT</Button>
           </div>

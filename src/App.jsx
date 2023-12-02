@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import axios from 'axios';
-import useWebSocket from 'react-use-websocket';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
@@ -101,7 +100,7 @@ function App() {
 
   useEffect(() => {
     callApi();
-  }, [page, especificCard, maxCards]);
+  }, [page, especificCard, maxCards]); // maxCard ao mudar está chamando a api de novo, ver SearchView
 
   useEffect(() => {
     setPage(1)
@@ -117,23 +116,14 @@ function App() {
 
   //WebSocket
   useEffect(() => {
-    console.log(lastJsonMessage)
-    // context.socket.onmessage = (msg) => {
-    //   console.log(msg.data)
-    //   setSnackbarMsg(msg.data)
-    //   setSnackbarOpen(true)
-    // }
+    //context.setSocket()
+    context.socket.onmessage = (msg) => {
+      //context.setSocket()
+      console.log(msg.data)
+      setSnackbarMsg(msg.data)
+      setSnackbarOpen(true)
+    }
   }, []);
-
-  //WebSocket
-  useWebSocket('ws://localhost:8080', {
-    onOpen: () => { console.log('WebSocket connection established') }
-  })
-
-  const { lastJsonMessage } = useWebSocket('ws://localhost:8080', {
-    share: true,
-    //filter here so the user cannot see
-  })
 
   return (
     <>
@@ -160,7 +150,7 @@ function App() {
 
               <Snackbar 
                 open={snackbarOpen}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={() => setSnackbarOpen(false)}
                 message={snackbarMsg}
               />
@@ -170,7 +160,7 @@ function App() {
 
               <main id="main">
 
-                <QueryContext.Provider value={{ setCards, setQuery, setErrorMsg, logoClicked, setShowModal }}>
+                <QueryContext.Provider value={{ setCards, setQuery, setErrorMsg, logoClicked, setShowModal, setMaxCards }}>
                   <SearchView />
                 </QueryContext.Provider>
 

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/appContext'
 import axios from 'axios';
-import useWebSocket from 'react-use-websocket';
 
 function Register() {
 
@@ -36,30 +35,22 @@ function Register() {
       });
 
       //WebSocket
-      //context.socket.send(`Card ${name} created by ${context.userEmail}`)
-      sendJsonMessage({
-        type: 'newCard',
-        content: `Card ${name} created by ${context.userEmail}`
-      })
+      //context.setSocket()
+      context.socket.send(`Card ${name} created by ${context.userEmail}`)
 
       setShowModal(false)
-      //location.reload(); //------------- FECHAR O MODAL AO INVÉS DE RECARREGAR
+
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
     }
     
   };
 
-  const {sendJsonMessage} = useWebSocket('ws://localhost:8080', {
-    share: true,
-    filter: () => false
-  })
-
   return (
     <div className="login-container main-popup">
       <div className='box-register' onClick={doNotClose}>
         <h2>New Card</h2>
-        <form onSubmit={submitForm} className='form'>
+        <div className='form'>
           <div className="form-group">
             <input
               type="text"
@@ -80,8 +71,8 @@ function Register() {
               placeholder='Image Url'
             />
           </div>
-          <button type="submit" className='button-submit'>Save</button>
-        </form>
+          <button type="submit" className='button-submit' onClick={submitForm}>Save</button>
+        </div>
       </div>
     </div>
   );

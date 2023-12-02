@@ -9,7 +9,7 @@ import QueryContext from '../QueryContext';
 
 export default function SearchView() {
 
-    const { setCards, errorMsg, logoClicked } = useContext(QueryContext)
+    const { setCards, errorMsg, logoClicked, setMaxCards } = useContext(QueryContext)
     
     const [placeholder, setPlaceholder] = React.useState("name")
     const [textFieldValue, setTextFieldValue] = React.useState("")
@@ -25,11 +25,12 @@ export default function SearchView() {
 
       try {
         if(textFieldValue != ''){
-          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
+          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=20&page=${page}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
+          //setMaxCards(response.data.data.count)      Para mudar a paginação ao pesquisar
           setCards(response.data.data.rows);
         }else{
           const response = await axios.get(`http://localhost:3000/api/card?limit=20&page=${page}`, {
@@ -37,6 +38,7 @@ export default function SearchView() {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
+          //setMaxCards(response.data.count)
           setCards(response.data.rows);
         }
         

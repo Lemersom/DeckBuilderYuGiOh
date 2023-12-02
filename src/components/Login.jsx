@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/appContext';
 import axios from 'axios';
-import useWebSocket from 'react-use-websocket';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -27,9 +26,9 @@ function Login() {
       });
       localStorage.setItem("token", response.data);
       context.setUserEmail(email)
-
+      
       //WebSocket 
-      //context.setSocket()
+      context.setSocket()
 
       location.reload();
     } 
@@ -42,7 +41,7 @@ function Login() {
     <div className="login-container">
       <div className='box-login'>
         <h2>Welcome</h2>
-        <form className='form' onSubmit={submitForm}>
+        <div className='form'>
           <div className="form-group">
             <input
               type="text"
@@ -51,7 +50,7 @@ function Login() {
               value={email}
               onChange={userChange}
               required
-              placeholder='Usuário'
+              placeholder='User'
             />
           </div>
           <div className="form-group">
@@ -62,11 +61,11 @@ function Login() {
               value={password}
               onChange={passwordChange}
               required
-              placeholder='Senha'
+              placeholder='Password'
             />
           </div>
-          <button type="submit" className='button-submit'>Login</button>
-        </form>
+          <button type="submit" className='button-submit' onClick={submitForm}>Login</button>
+        </div>
       </div>
     </div>
   );
