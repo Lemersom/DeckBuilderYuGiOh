@@ -8,8 +8,6 @@ function Login({ onLogin}) {
 
   const context = useContext(AppContext)
 
-  let cont = 3
-
   const userChange = (e) => {
     setEmail(e.target.value);
   };
@@ -38,17 +36,7 @@ function Login({ onLogin}) {
       window.location.reload(false);
     } 
     catch (error) {
-      cont -=1
       console.error('Erro durante a solicitação:', error);
-      console.log(cont)
-      if(cont == 0) {
-        console.log('aguarde 10 segundos para tentar novamente')
-        await delay(10000)
-        cont = 3
-        console.log(cont)
-        return
-      }
-      console.log(`Restam ${cont} tentativa(s)`)
     }
   };
 

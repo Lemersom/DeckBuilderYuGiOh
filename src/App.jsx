@@ -55,6 +55,7 @@ function App() {
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMsg, setSnackbarMsg] = useState('')
   const [loginState, setLoginState] = useState(true);
+  const [text, setText] = useState('')
 
   const context = useContext(AppContext)
 
@@ -64,8 +65,20 @@ function App() {
     logoClicked ? setLogoClicked(0) : setLogoClicked(1)
   }
 
-  const onChangePage = (event, value) => {
+  const onChangePage = async(event, value) => {
     setPage(value);
+
+
+    const response = await axios.get(`https://localhost:3000/api/card/${text}?limit=4&page=${value}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      }
+    });
+    setCards(response.data.rows);
+    setMaxCards(response.data.count)
+
+
+
     setScrollToTop(true)
   };
 
@@ -101,7 +114,7 @@ function App() {
   useEffect(() => {
     callApi();
     if(context.token) setLoginState(false)
-  }, [page, especificCard, context.token]);
+  }, [especificCard, context.token]);
 
   useEffect(() => {
     setPage(1)
@@ -160,7 +173,7 @@ function App() {
 
               <main id="main">
 
-                <QueryContext.Provider value={{ setCards, setQuery, setErrorMsg, logoClicked, setShowModal, setMaxCards }}>
+                <QueryContext.Provider value={{ setCards, setQuery, setErrorMsg, logoClicked, setShowModal, setMaxCards, setText  }}>
                   <SearchView />
                 </QueryContext.Provider>
 

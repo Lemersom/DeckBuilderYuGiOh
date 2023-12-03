@@ -9,7 +9,7 @@ import QueryContext from '../QueryContext';
 
 export default function SearchView() {
 
-    const { setCards, errorMsg, logoClicked, setMaxCards } = useContext(QueryContext)
+    const { setCards, errorMsg, logoClicked, setMaxCards, setText } = useContext(QueryContext)
     
     const [placeholder, setPlaceholder] = React.useState("name")
     const [textFieldValue, setTextFieldValue] = React.useState("")
@@ -30,8 +30,9 @@ export default function SearchView() {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
-           
+           setPage(page)
           setCards(response.data.rows);
+          setText(textFieldValue)
           setMaxCards(response.data.count)
         }else{
           const response = await axios.get(`https://localhost:3000/api/card?limit=4&page=${page}`, {
@@ -53,7 +54,7 @@ export default function SearchView() {
     useEffect(() => {
       setPlaceholder("name")
       setTextFieldValue("")
-    }, [logoClicked]);
+    }, [logoClicked, page]);
 
     return (
         <div className="App-main">
