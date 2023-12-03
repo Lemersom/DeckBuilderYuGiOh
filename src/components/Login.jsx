@@ -25,7 +25,7 @@ function Login({ onLogin}) {
 
     try {
 
-      const response = await axios.post('http://localhost:3000/login/', {
+      const response = await axios.post('https://localhost:3000/login/', {
         email: email,
         password: password,
       });
@@ -35,6 +35,7 @@ function Login({ onLogin}) {
       context.setSocket()
       context.setToken(localStorage.getItem('token'))
       onLogin(false)
+      window.location.reload(false);
     } 
     catch (error) {
       cont -=1

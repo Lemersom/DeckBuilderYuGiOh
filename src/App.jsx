@@ -77,7 +77,7 @@ function App() {
   const callApi = async () => {
 
     try {
-      const link = `http://localhost:3000/api/card?limit=4&page=${page}`;
+      const link = `https://localhost:3000/api/card?limit=4&page=${page}`;
 
       const response = await axios.get(link, {
         headers: {
@@ -101,11 +101,10 @@ function App() {
   useEffect(() => {
     callApi();
     if(context.token) setLoginState(false)
-  }, [page,especificCard, context.token]); // maxCard ao mudar está chamando a api de novo, ver SearchView
+  }, [page, especificCard, context.token]);
 
   useEffect(() => {
     setPage(1)
-    callApi();
   }, [query]);
 
   useEffect(() => {
@@ -119,7 +118,6 @@ function App() {
   useEffect(() => {
     //context.setSocket()
     context.socket.onmessage = (msg) => {
-      //context.setSocket()
       setSnackbarMsg(msg.data)
       setSnackbarOpen(true)
     }

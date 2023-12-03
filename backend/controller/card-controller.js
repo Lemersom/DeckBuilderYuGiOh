@@ -36,7 +36,8 @@ router.get('/',
     async (req, res) => {
         const response = await cardService.listCards(req.query.limit, req.query.page)
         res.status(response.status).json(response.data)
-})
+    }
+)
 
 router.get('/:name', 
     authValidator.validateToken,
@@ -53,8 +54,9 @@ router.get('/:name',
         await logMessage.sendMessage(log)
         await logMessage.receiveMessage()
 
-        res.status(200).json(response)
-})
+        res.status(response.status).json(response.data)
+    }
+)
 
 router.post('/', 
     authValidator.validateToken,
@@ -68,6 +70,7 @@ router.post('/',
         )
         
         res.status(response.status).json(response.data)
-})
+    }
+)
 
 module.exports = router
