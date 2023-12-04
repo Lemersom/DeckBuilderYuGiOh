@@ -46,6 +46,7 @@ export default function SearchView() {
           setText('')
           setCards(response.data.rows);
           setMaxCards(response.data.count)
+          setError(null)
         }
         
         

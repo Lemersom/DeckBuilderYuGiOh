@@ -37,6 +37,7 @@ function Login({ onLogin }) {
       context.setToken(localStorage.getItem('token'))
       onLogin(false)
       window.location.reload(false);
+      setError(null)
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
   

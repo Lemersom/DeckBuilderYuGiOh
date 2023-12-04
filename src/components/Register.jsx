@@ -46,6 +46,7 @@ function Register() {
         setShowModal(false)
       }, 5000)
       window.location.reload(false);
+      setError(null)
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
       setError(error+'');
