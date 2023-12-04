@@ -20,6 +20,10 @@ function Login({ onLogin }) {
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+  useEffect(() => {
+
+  }, [error]);
+
   const submitForm = async (e) => {
     e.preventDefault();
   
