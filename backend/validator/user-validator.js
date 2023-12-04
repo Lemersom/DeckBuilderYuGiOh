@@ -1,20 +1,29 @@
 const Joi = require('joi');
+const errorMessage = require('../messaging/error-messaging')
 
 module.exports = {
-    validateEmail: function(req, res, next) {
+    validateEmail: async function(req, res, next) {
         const { error, value } = Joi.string().required().validate(req.body.email)
         if(error) {
-            return res.status(400).json("Email cannot be null")
+            const errorLog = { status: 400, message: "Email cannot be null" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.body.email = value
         return next()
     },
     
-    validatePassword: function(req, res, next) {
+    validatePassword: async function(req, res, next) {
         const { error, value } = Joi.string().required().validate(req.body.password)
         if(error) {
-            return res.status(400).json("Password cannot be null")
+            const errorLog = { status: 400, message: "Password cannot be null" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.body.password = value

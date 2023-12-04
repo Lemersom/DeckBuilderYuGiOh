@@ -1,23 +1,32 @@
 const Joi = require('joi')
+const errorMessage = require('../messaging/error-messaging')
 
 module.exports = {
-    validateName: function(req, res, next) {
+    validateName: async function(req, res, next) {
         const { error, value } = Joi.string().required().validate(req.body.name)
         if(error) {
-            return res.status(400).json("Card name cannot be null")
+            const errorLog = { status: 400, message: "Card name cannot be null" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.body.name = value
         return next()
     },
 
-    validateImage: function(req, res, next) {
+    validateImage: async function(req, res, next) {
         const { error, value } = Joi.string().regex(
             /^(https:\/\/images\.ygoprodeck\.com\/images\/(cards|cards_small|cards_cropped)\/\d+\.(jpg|jpeg|png))$/
         ).allow('').validate(req.body.image)
 
         if(error) {
-            return res.status(400).json("Card image url must be in the api: https://ygoprodeck.com/api-guide/")
+            const errorLog = { status: 400, message: "Card image url must be in the api: https://ygoprodeck.com/api-guide/" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.body.image = value

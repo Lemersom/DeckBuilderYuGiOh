@@ -39,7 +39,6 @@ function Register() {
       });
 
       //WebSocket
-      //context.setSocket()
       context.socket.send(`Card created: ${name}`)
 
       setTimeout(() => {

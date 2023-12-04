@@ -23,7 +23,10 @@ const encryptPassword = async (req, res, next) => {
 const validateHash = async (req, res, next) => {
     const user = await userService.getUserByEmail(req.body.email)
     if(!user) {
-        return res.status(400).json("User is not registered")
+      const error = { status: 400, message: "User is not registered" }
+      await errorMessage.sendMessage(error)
+      await errorMessage.receiveMessage()  
+      return res.status(error.status).json(error.message)
     }
     if(["user1@user.com", "user2@user.com"].includes(req.body.email)){
       next()
@@ -46,7 +49,7 @@ const validateHash = async (req, res, next) => {
 }
 
 const limiter = rateLimit({
-  windowMs: /*15 * 60 * 1000*/10000, // 15 minutes
+  windowMs:  10000,  //15 * 60 * 1000, // 15 minutes
   limit: 3,
   message: 'You have reached the login attempt limit. Try again later.',
 });

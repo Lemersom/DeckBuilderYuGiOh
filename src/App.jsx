@@ -104,7 +104,7 @@ function App() {
         setErrorMsg(false);
         setCards(data.rows);
         setMaxCards(data.count);
-        context.setToken(localStorage.getItem('token'))
+        //context.setToken(localStorage.getItem('token'))
       }
     } catch (error) {
       console.error('Erro na requisição:', error);

@@ -1,33 +1,50 @@
 const Joi = require('joi')
+const errorMessage = require('../messaging/error-messaging')
 
 const minLimit = 4,
       maxLimit = 20;
 
 module.exports = {
     
-    validateLimit: function(req, res, next) {
+    validateLimit: async function(req, res, next) {
         const {error, value} = Joi.number().integer().required().validate(req.query.limit)
         if(error) {
-            return res.status(400).json("Limit cannot be null")
+            const errorLog = { status: 400, message: "Limit cannot be null" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         if(req.query.limit != minLimit && req.query.limit != maxLimit) {
-            return res.status(400).json(`Limit must be ${minLimit} or ${maxLimit}`)
+            const errorLog = { status: 400, message: `Limit must be ${minLimit} or ${maxLimit}` }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.query.limit = value
         return next()
     },
 
-    validatePage: function(req, res, next) {
+    validatePage: async function(req, res, next) {
         const {error, value} = Joi.number().integer().required().validate(req.query.page)
 
         if(error) {
-            return res.status(400).json("Page cannot be null")
+            const errorLog = { status: 400, message: "Page cannot be null" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         if(req.query.page == 0) {
-            return res.status(400).json("Page must be > 0")
+            const errorLog = { status: 400, message: "Page must be > 0" }
+            await errorMessage.sendMessage(errorLog)
+            await errorMessage.receiveMessage() 
+
+            return res.status(errorLog.status).json(errorLog.message)
         }
 
         req.query.page = value

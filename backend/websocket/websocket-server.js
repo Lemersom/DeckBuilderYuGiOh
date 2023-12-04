@@ -7,18 +7,22 @@ const WebsocketServer = new WebSocket.Server({
 
 let connections = []
 
-WebsocketServer.on('connection', (socket, req) => {
+WebsocketServer.on('connection', async(socket, req) => {
 
     let token = req.url.split('?token=')[1]
     if(!token) {
-        res.status(403).json("Acess denied - Token missing")
-        return
+        socket.on('close', () => {
+            console.log(`Closing WebSocket Connection: ${connections.indexOf(socket)}`)
+            connections = connections.filter((s) => s !== socket)
+        })
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (error, payload) => {
         if (error) {
-            res.status(403).json("Access denied - Invalid token");
-            return;
+            socket.on('close', () => {
+                console.log(`Closing WebSocket Connection: ${connections.indexOf(socket)}`)
+                connections = connections.filter((s) => s !== socket)
+            })
         }
         
 

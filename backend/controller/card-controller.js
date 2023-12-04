@@ -37,7 +37,7 @@ router.get('/',
     async (req, res) => {
         const response = await cardService.listCards(req.query.limit, req.query.page)
 
-        if(response.status > 200 && response.status < 600){
+        if(response.status > 399 && response.status < 600){
 
             const error = { status: response.status, message: response.data.message }
   
