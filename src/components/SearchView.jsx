@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import axios from 'axios';
+import ErrorAlert from './ErrorAlert';
 
 import QueryContext from '../QueryContext';
 
@@ -14,6 +15,7 @@ export default function SearchView() {
     const [placeholder, setPlaceholder] = React.useState("name")
     const [textFieldValue, setTextFieldValue] = React.useState("")
     const [page, setPage] = useState(1);
+    const [error, setError] = useState(null)
     
 
     const keyPressed = (event) => {
@@ -29,8 +31,9 @@ export default function SearchView() {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
-          });
-           setPage(page)
+            
+          }); 
+          setPage(page)
           setCards(response.data.rows);
           setText(textFieldValue)
           setMaxCards(response.data.count)
@@ -39,7 +42,7 @@ export default function SearchView() {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
-          });
+          });   
           setText('')
           setCards(response.data.rows);
           setMaxCards(response.data.count)
@@ -48,13 +51,14 @@ export default function SearchView() {
         
       } catch (error) {
         console.error('Erro durante a solicitação:', error);
+        setError(error+'');
       }
     }
 
     useEffect(() => {
       setPlaceholder("name")
       setTextFieldValue("")
-    }, [logoClicked, page]);
+    }, [logoClicked, page, error]);
 
     return (
         <div className="App-main">
@@ -72,7 +76,8 @@ export default function SearchView() {
             <Button variant="contained" color="blueBtn" className="App-main-button" onClick={searchFunction}>
                 <Typography>Search</Typography>
             </Button>
-
+            
+            {error && <ErrorAlert message={error} />}
 
             <div className='msg-div'>
               <Typography className='error-msg' variant='h5' display={errorMsg ? "block" : "none"}>Failed to find cards</Typography>

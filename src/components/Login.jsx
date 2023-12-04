@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../context/appContext';
 import axios from 'axios';
+import ErrorAlert from './ErrorAlert';
 
-function Login({ onLogin}) {
+function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null)
 
   const context = useContext(AppContext)
 
@@ -20,9 +22,8 @@ function Login({ onLogin}) {
 
   const submitForm = async (e) => {
     e.preventDefault();
-
+  
     try {
-
       const response = await axios.post('https://localhost:3000/login/', {
         email: email,
         password: password,
@@ -30,22 +31,31 @@ function Login({ onLogin}) {
       localStorage.setItem("token", response.data);
       context.setUserEmail(email)
       context.setToken(localStorage.getItem('token'))
-      //WebSocket 
-      //context.setSocket()
       onLogin(false)
       window.location.reload(false);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error('Erro durante a solicitação:', error);
+  
+      if (error.response) {
+        if (error.response.data) {
+          setError(error.response.data);
+        } else {
+          setError('Erro na solicitação, tente novamente.');
+        }
+      } else {
+        setError('Erro na solicitação, tente novamente.');
+      }
     }
   };
 
   return (
     <div className="login-container">
+      {error && <ErrorAlert message={error} />}
       <div className='box-login'>
         <h2>Welcome</h2>
         <div className='form'>
           <div className="form-group">
+          
             <input
               type="text"
               id="username"

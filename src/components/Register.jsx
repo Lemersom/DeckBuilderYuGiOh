@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/appContext'
 import axios from 'axios';
+import ErrorAlert from './ErrorAlert';
 
 function Register() {
 
@@ -9,6 +10,8 @@ function Register() {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(null)
+
 
   const doNotClose = (event) => {
     event.stopPropagation();
@@ -34,26 +37,28 @@ function Register() {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,
         }
       });
-      
+
       //WebSocket
       //context.setSocket()
       context.socket.send(`Card created: ${name}`)
 
       setTimeout(() => {
-            setShowModal(false)
+        setShowModal(false)
       }, 5000)
-    window.location.reload(false);
+      window.location.reload(false);
     } catch (error) {
       console.error('Erro durante a solicitação:', error);
+      setError(error+'');
     }
-    
+
   };
 
   return (
     <div className="login-container main-popup">
-      <div className='box-register'  onClick={doNotClose}>
+      <div className='box-register' onClick={doNotClose}>
         <h2>New Card</h2>
         <div className='form'>
+          {error && <ErrorAlert message={error} />}
           <div className="form-group">
             <input
               type="text"
@@ -74,9 +79,9 @@ function Register() {
               placeholder='Image Url'
             />
           </div>
-          
+
         </div>
-        
+
       </div>
       <button type="submit" className='button-register' onClick={submitForm}>Save</button>
     </div>
