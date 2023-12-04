@@ -37,6 +37,7 @@ export default function SearchView() {
           setCards(response.data.rows);
           setText(textFieldValue)
           setMaxCards(response.data.count)
+          setError(null)
         }else{
           const response = await axios.get(`https://localhost:3000/api/card?limit=4&page=${page}`, {
             headers: {
