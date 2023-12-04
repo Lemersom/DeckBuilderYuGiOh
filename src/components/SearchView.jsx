@@ -40,7 +40,7 @@ export default function SearchView() {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
           });
-          
+          setText('')
           setCards(response.data.rows);
           setMaxCards(response.data.count)
         }

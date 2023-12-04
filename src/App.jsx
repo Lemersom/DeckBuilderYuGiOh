@@ -129,12 +129,13 @@ function App() {
 
   //WebSocket
   useEffect(() => {
-    //context.setSocket()
-    context.socket.onmessage = (msg) => {
-      setSnackbarMsg(msg.data)
-      setSnackbarOpen(true)
+    if(context.socket) {
+      context.socket.onmessage = (msg) => {
+        setSnackbarMsg(msg.data)
+        setSnackbarOpen(true)
+      }
     }
-  }, []);
+  }, [context.socket]);
 
   return (
     <>

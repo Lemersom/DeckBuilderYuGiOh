@@ -1,4 +1,5 @@
 const WebSocket = require('ws')
+const jwt = require('jsonwebtoken')
 
 const WebsocketServer = new WebSocket.Server({
     port: 8080
@@ -6,23 +7,40 @@ const WebsocketServer = new WebSocket.Server({
 
 let connections = []
 
-WebsocketServer.on('connection', (socket) => {
-    connections.push(socket)
+WebsocketServer.on('connection', (socket, req) => {
 
-    socket.on('close', () => {
-        console.log(`Closing WebSocket Connection: ${connections.indexOf(socket)}`)
-        connections = connections.filter((s) => s !== socket)
-    })
+    let token = req.url.split('?token=')[1]
+    if(!token) {
+        res.status(403).json("Acess denied - Token missing")
+        return
+    }
 
-    socket.on('message', (msg) => {
-        console.log(`WebSocket message, ${connections.indexOf(socket)}: ${msg}`)
+    jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
+        if (error) {
+            res.status(403).json("Access denied - Invalid token");
+            return;
+        }
+        
 
-        connections.forEach((conn) => {
-            if(conn != socket){
-                conn.send(`${connections.indexOf(socket)}: ${msg}`)
-            }
+        connections.push(socket)
+
+        socket.on('close', () => {
+            console.log(`Closing WebSocket Connection: ${connections.indexOf(socket)}`)
+            connections = connections.filter((s) => s !== socket)
         })
-    })
+
+        socket.on('message', (msg) => {
+            console.log(`WebSocket message, ${connections.indexOf(socket)}: ${msg}`)
+
+            connections.forEach((conn) => {
+                if(conn != socket){
+                    conn.send(`${connections.indexOf(socket)}: ${msg}`)
+                }
+            })
+        })
+
+    });
+
 })
 
 module.exports = WebsocketServer

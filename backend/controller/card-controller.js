@@ -7,7 +7,6 @@ const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
 const logMessage = require('../messaging/log-messaging')
-const {sanitize} = require('express-xss-sanitizer');
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
@@ -46,7 +45,6 @@ router.get('/:name',
     pageValidator.validatePage,
     cache.route({ expire: 15 }),
     async (req, res) => {
-        req.params.name = sanitize(req.params.name)
         const response = await cardService.listCards(req.query.limit, req.query.page, req.params.name)
 
         const userResponse = await userService.getUserById(req.userId)
@@ -66,8 +64,6 @@ router.post('/',
     cardValidator.validateImage,
     cache.invalidate(),    
     async (req, res) => {
-        req.body.name = sanitize(req.body.name)
-        req.body.image = sanitize(req.body.image)
         const response = await cardService.createCard(
             req.body.name,
             req.body.image

@@ -5,13 +5,14 @@ const WebSocket = require('ws');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');   
+const {xss} = require('express-xss-sanitizer')
 require('dotenv').config();
 
 const WebsocketServer = require('./websocket/websocket-server')
 
 const app = express();
 
-app.use(express.json(), cors());
+app.use(express.json(), cors(), xss());
 
 https.createServer({
     key: fs.readFileSync('key.pem'),

@@ -29,9 +29,9 @@ function Login({ onLogin}) {
       });
       localStorage.setItem("token", response.data);
       context.setUserEmail(email)
-      //WebSocket 
-      context.setSocket()
       context.setToken(localStorage.getItem('token'))
+      //WebSocket 
+      //context.setSocket()
       onLogin(false)
       window.location.reload(false);
     } 
