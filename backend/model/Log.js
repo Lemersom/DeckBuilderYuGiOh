@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../helper/database')
 
-const CardModel = sequelize.define('Log', 
+const LogModel = sequelize.define('Log', 
     {
         id: {
             type: DataTypes.INTEGER,
@@ -24,4 +24,4 @@ const CardModel = sequelize.define('Log',
     }, { timestamps: false }
 )
 
-module.exports = CardModel
+module.exports = LogModel

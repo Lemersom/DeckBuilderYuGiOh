@@ -5,7 +5,7 @@ const auth = require('../helper/auth')
 const userService = require('../service/user-service')
 const userValidator = require('../validator/user-validator')
 const {rateLimit} = require('express-rate-limit');
-const errorMessage = require('../messaging/error-messaging')
+const messagePublisher = require('../messaging/publisher')
 
 const saltRounds = 10
 
@@ -24,8 +24,7 @@ const validateHash = async (req, res, next) => {
     const user = await userService.getUserByEmail(req.body.email)
     if(!user) {
       const error = { status: 400, message: "User is not registered" }
-      await errorMessage.sendMessage(error)
-      await errorMessage.receiveMessage()  
+      await messagePublisher.sendMessageToError(error)
       return res.status(error.status).json(error.message)
     }
     if(["user1@user.com", "user2@user.com"].includes(req.body.email)){
@@ -61,13 +60,10 @@ router.post('/login',
         const response = await auth.authLogin(req.body.email, req.body.password)
 
         if(response.status > 399 && response.status < 600){
-
           const error = { status: response.status, message: response.data }
-
-          await errorMessage.sendMessage(error)
-          await errorMessage.receiveMessage()  
-
+          await messagePublisher.sendMessageToError(error)
         }
+        
         res.status(response.status).json(response.data)
     }
 )
@@ -79,14 +75,12 @@ router.post('/register',
     encryptPassword,
     async (req, res) => {
         const response = await userService.createUser(req.body.email, req.body.password)
+        
         if(response.status > 399 && response.status < 600){
-
           const error = { status: response.status, message: response.data.message }
-
-          await errorMessage.sendMessage(error)
-          await errorMessage.receiveMessage()  
-
+          await messagePublisher.sendMessageToError(error)
         }
+        
         res.status(response.status).json(response.data)
     }
 )

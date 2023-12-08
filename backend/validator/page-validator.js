@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const errorMessage = require('../messaging/error-messaging')
+const messagePublisher = require('../messaging/publisher')
 
 const minLimit = 4,
       maxLimit = 20;
@@ -10,16 +10,14 @@ module.exports = {
         const {error, value} = Joi.number().integer().required().validate(req.query.limit)
         if(error) {
             const errorLog = { status: 400, message: "Limit cannot be null" }
-            await errorMessage.sendMessage(errorLog)
-            await errorMessage.receiveMessage() 
+            await messagePublisher.sendMessageToError(errorLog)
 
             return res.status(errorLog.status).json(errorLog.message)
         }
 
         if(req.query.limit != minLimit && req.query.limit != maxLimit) {
             const errorLog = { status: 400, message: `Limit must be ${minLimit} or ${maxLimit}` }
-            await errorMessage.sendMessage(errorLog)
-            await errorMessage.receiveMessage() 
+            await messagePublisher.sendMessageToError(errorLog)
 
             return res.status(errorLog.status).json(errorLog.message)
         }
@@ -33,16 +31,14 @@ module.exports = {
 
         if(error) {
             const errorLog = { status: 400, message: "Page cannot be null" }
-            await errorMessage.sendMessage(errorLog)
-            await errorMessage.receiveMessage() 
+            await messagePublisher.sendMessageToError(errorLog)
 
             return res.status(errorLog.status).json(errorLog.message)
         }
 
         if(req.query.page == 0) {
             const errorLog = { status: 400, message: "Page must be > 0" }
-            await errorMessage.sendMessage(errorLog)
-            await errorMessage.receiveMessage() 
+            await messagePublisher.sendMessageToError(errorLog)
 
             return res.status(errorLog.status).json(errorLog.message)
         }

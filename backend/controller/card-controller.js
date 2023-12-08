@@ -6,8 +6,7 @@ const authValidator = require('../validator/auth-validator')
 const pageValidator = require('../validator/page-validator')
 const cardValidator = require('../validator/card-validator')
 const cache = require('express-redis-cache')()
-const logMessage = require('../messaging/log-messaging')
-const errorMessage = require('../messaging/error-messaging')
+const messagePublisher = require('../messaging/publisher')
 
 cache.invalidate = (name) => {
     return (req, res, next) => {
@@ -38,13 +37,9 @@ router.get('/',
         const response = await cardService.listCards(req.query.limit, req.query.page)
 
         if(response.status > 399 && response.status < 600){
-
             const error = { status: response.status, message: response.data.message }
-  
-            await errorMessage.sendMessage(error)
-            await errorMessage.receiveMessage()  
-  
-          }
+            await messagePublisher.sendMessageToError(error)
+        }
         
         res.status(response.status).json(response.data)
     }
@@ -59,20 +54,14 @@ router.get('/:name',
         const response = await cardService.listCards(req.query.limit, req.query.page, req.params.name)
 
         if(response.status > 399 && response.status < 600){
-
             const error = { status: response.status, message: response.data }
-  
-            await errorMessage.sendMessage(error)
-            await errorMessage.receiveMessage()  
-  
-          }
+            await messagePublisher.sendMessageToError(error)
+        }
 
         const userResponse = await userService.getUserById(req.userId)
 
         const log = { search: req.params.name, userEmail: userResponse.email, date: new Date().toLocaleString() }
-
-        await logMessage.sendMessage(log)
-        await logMessage.receiveMessage()
+        await messagePublisher.sendMessageToLog(log)
 
         res.status(response.status).json(response.data)
     }
@@ -90,14 +79,9 @@ router.post('/',
         )
 
         if(response.status > 399 && response.status < 600){
-            
-
             const error = { status: response.status, message: response.data }
-  
-            await errorMessage.sendMessage(error)
-            await errorMessage.receiveMessage()  
-  
-          }
+            await messagePublisher.sendMessageToError(error)
+        }
         
         res.status(response.status).json(response.data)
     }

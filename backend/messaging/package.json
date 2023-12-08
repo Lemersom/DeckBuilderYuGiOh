@@ -1,0 +1,13 @@
+{
+  "name": "messaging",
+  "version": "1.0.0",
+  "description": "",
+  "main": "error-messaging.js",
+  "scripts": {
+    "start": "node consumer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

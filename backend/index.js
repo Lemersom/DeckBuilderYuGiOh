@@ -3,10 +3,9 @@ const cors = require('cors');
 const cache = require('express-redis-cache');
 const WebSocket = require('ws');
 const https = require('https');
-const fs = require('fs');
-const path = require('path');   
+const fs = require('fs');  
 const {xss} = require('express-xss-sanitizer')
-require('dotenv').config();
+require('dotenv').config()
 
 const WebsocketServer = require('./websocket/websocket-server')
 
