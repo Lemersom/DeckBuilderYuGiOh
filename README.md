@@ -1,31 +1,31 @@
 
 # Deck Builder Yu-Gi-Oh
 
-Final project executed as a duo for the 'Fullstack Web Programming' course. This project is a continuation of [THIS ONE](https://github.com/Lemersom/CardsSearchYuGiOh). Deck Builder Yu-Gi-Oh is a Full-Stack application that allows the user to add Yu-Gi-Oh cards and search for them, creating their deck.
+This project is a continuation of [CardsSearchYuGiOh](https://github.com/Lemersom/CardsSearchYuGiOh), executed as a duo for the 'Fullstack Web Programming' course. Deck Builder Yu-Gi-Oh is a Full-Stack application that allows users to add Yu-Gi-Oh cards, search for them, and create their decks.
 
 ## Technologies
 - **Front-End:** React.js Single-Page Application
-- **Back-End:** Node.js, Express.js, Redis, Websocket, and RabbitMQ
+- **Back-End:** Node.js, Express.js, Redis (Caching), Websocket, and RabbitMQ (Messaging)
 - **Database:** MySQL
 - **Containerization:** Docker
 
 ## Project Features
 
 - Node.js HTTP server following the REST API pattern
-- WebSocket server capable of sending messages to users whenever a new item is added. 
-- Caching server to speed up searches
-- Messaging server for log generation
-- React.js single page application
+- WebSocket server for real-time messaging on new item additions 
+- Redis used as a caching server to optimize search speeds
+- RabbitMQ for messaging and log generation
+- React.js single page application for the user interface
 
 ## Security Features
-- Authentication using JWT tokens
-- Self-Signed SSL Certificate (HTTPS)
-- Sanitizers to prevent XSS
-- Record of errors in the database
+- JWT token-based Authentication
+- Self-Signed SSL Certificate for HTTPS
+- Sanitization measures to prevent XSS attacks
+- Error logging in the database
 
 ## Running Locally
 
-**Prerequisites:** Make sure you have [Node.js](https://nodejs.org/) and [Docker](https://www.docker.com/get-started/) installed on your machine.
+**Prerequisites:** Ensure you have [Node.js](https://nodejs.org/) and [Docker](https://www.docker.com/get-started/) installed on your machine.
 
 Clone the project
 
@@ -45,13 +45,13 @@ Run Docker Compose with MySQL, Redis, and RabbitMQ images
 docker-compose up -d
 ```
 
-Install the dependencies
+Install dependencies
 
 ```bash
 npm run install:all
 ```
 
-Start the React app and the HTTP, Websocket, and Messaging servers
+Start the React app, HTTP, WebSocket, and Messaging servers
 
 ```bash
 npm run start:all
