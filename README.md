@@ -39,7 +39,7 @@ Navigate to the project directory
 cd DeckBuilderYuGiOh
 ```
 
-Run the Docker Compose with the MySQL, Redis-Stack and RabbitMQ images
+Run Docker Compose with MySQL, Redis, and RabbitMQ images
 
 ```bash
 docker-compose up -d
