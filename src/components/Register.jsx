@@ -29,7 +29,7 @@ function Register() {
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://localhost:3000/api/card/', {
+      const response = await axios.post('http://localhost:3000/api/card/', {
         name: name,
         image: image,
       }, {

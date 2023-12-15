@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 key.pem
+mysql_data
 
 # Editor directories and files
 .vscode/*

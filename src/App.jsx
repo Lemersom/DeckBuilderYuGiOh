@@ -69,7 +69,7 @@ function App() {
     setPage(value);
 
 
-    const response = await axios.get(`https://localhost:3000/api/card/${text}?limit=4&page=${value}`, {
+    const response = await axios.get(`http://localhost:3000/api/card/${text}?limit=4&page=${value}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
       }
@@ -90,7 +90,7 @@ function App() {
   const callApi = async () => {
 
     try {
-      const link = `https://localhost:3000/api/card?limit=4&page=${page}`;
+      const link = `http://localhost:3000/api/card?limit=4&page=${page}`;
 
       const response = await axios.get(link, {
         headers: {

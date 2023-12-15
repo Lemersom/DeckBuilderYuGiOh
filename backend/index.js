@@ -13,12 +13,16 @@ const app = express();
 
 app.use(express.json(), cors(), xss());
 
-https.createServer({
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
-}, app).listen(3000, () => {
-    console.log(`Server running on port ${3000}`);
-});
+// https.createServer({
+//     key: fs.readFileSync('key.pem'),
+//     cert: fs.readFileSync('cert.pem')
+// }, app).listen(3000, () => {
+//     console.log(`Server running on port ${3000}`);
+// });
+
+app.listen(3000, () => {
+    console.log(`Server running on port ${3000}`)
+})
 
 const redisCache = cache({
     host: 'localhost',

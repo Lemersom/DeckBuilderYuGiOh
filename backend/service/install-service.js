@@ -1,6 +1,12 @@
 const sequelize = require('../helper/database')
 const userDao = require('../DAO/user-dao')
 
+const userModel = require('../model/User')
+const cardModel = require('../model/Card')
+const errorModel = require('../model/Error')
+const logModel = require('../model/Log')
+
+
 async function createFirstUsers() {
     const user1 = await userDao.create("user1@user.com", "user1")
     const user2 = await userDao.create("user2@user.com", "user2")

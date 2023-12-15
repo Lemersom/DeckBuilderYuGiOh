@@ -27,7 +27,7 @@ export default function SearchView() {
     const searchFunction = async (e) => {
       try {
         if(textFieldValue != ''){
-          const response = await axios.get(`https://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
+          const response = await axios.get(`http://localhost:3000/api/card/${textFieldValue}?limit=4&page=${page}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }
@@ -39,7 +39,7 @@ export default function SearchView() {
           setMaxCards(response.data.count)
           setError(null)
         }else{
-          const response = await axios.get(`https://localhost:3000/api/card?limit=4&page=${page}`, {
+          const response = await axios.get(`http://localhost:3000/api/card?limit=4&page=${page}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem("token")}`,
             }

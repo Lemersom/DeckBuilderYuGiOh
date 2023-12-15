@@ -20,15 +20,15 @@ function Login({ onLogin }) {
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [error]);
+  // }, [error]);
 
   const submitForm = async (e) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('https://localhost:3000/login/', {
+      const response = await axios.post('http://localhost:3000/login/', {
         email: email,
         password: password,
       });
@@ -45,10 +45,10 @@ function Login({ onLogin }) {
         if (error.response.data) {
           setError(error.response.data);
         } else {
-          setError('Erro na solicitação, tente novamente.');
+          setError('Request error, try again');
         }
       } else {
-        setError('Erro na solicitação, tente novamente.');
+        setError('Request error, try again');
       }
     }
   };
