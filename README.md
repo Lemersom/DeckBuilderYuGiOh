@@ -25,7 +25,7 @@ This project is a continuation of [CardsSearchYuGiOh](https://github.com/Lemerso
 
 ## Running Locally
 
-**Prerequisites:** Ensure you have [Node.js](https://nodejs.org/) and [Docker](https://www.docker.com/get-started/) installed on your machine.
+**Prerequisites:** Ensure you have [Node.js](https://nodejs.org/) and [Docker](https://www.docker.com/get-started/) installed on your machine. Create a .env file following .env.example.
 
 Clone the project
 
